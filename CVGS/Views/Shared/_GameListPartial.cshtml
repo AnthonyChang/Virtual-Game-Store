@@ -1,0 +1,14 @@
+﻿@model IEnumerable<CVGS.Data.Game>
+@{
+    ViewBag.Title = "Game List";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+
+            @Html.Partial("_GameTilePartial", item)
+        }
+    </div>
+</div>

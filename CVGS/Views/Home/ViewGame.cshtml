@@ -1,0 +1,311 @@
+﻿@model CVGS.Models.GameViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    var rating = Model.Rating == null ? 0 : Model.Rating;
+    decimal ratingPercent = 0;
+    if (rating != null)
+    {
+        ratingPercent = (decimal)(rating / 5) * 100;
+    }
+}
+
+<style type="text/css">
+    body {
+        background: center top no-repeat #1b2838;
+        color: whitesmoke;
+    }
+
+    textarea {
+        max-width: 450px;
+    }
+
+    body .modal {
+        color: #001a66;
+    }
+
+    .img-responsive {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    .progress-bar {
+        color: black;
+    }
+
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+
+    .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin-top: 50%;
+    }
+
+    .small-text {
+        font-size: x-small;
+    }
+
+    table, td {
+        border-bottom: 1px solid #808080;
+    }
+
+    .btn-margin-top {
+        margin-top: 10px;
+    }
+
+    .margin-bottom {
+        margin-bottom: 3em;
+    }
+
+    .hr-reviews {
+        border-top: 1px solid gray;
+        width: 80%;
+    }
+
+    .unapproved-review {
+        color: gray;
+        font-style: italic;
+    }
+
+    .pending-approval-notice {
+        margin-top: 3em;
+        font-weight: bold;
+        color: orange;
+    }
+
+    .game-image {
+        width: 100%;
+        max-height: 300px;
+        min-height: 300px;
+    }
+</style>
+
+<hr />
+<div class="row vertical-align">
+    <div class="col-sm-4">
+        <img src="@Model.ImageUrl" alt="Game Cover of @Model.Title" class="img-responsive img-rounded" />
+    </div>
+    <div class="col-sm-8" style="padding-left:5%;">
+        <h2 id="gameTitle">@Model.Title</h2>
+        <div class="container">
+            <div class="row vertical-align">
+                <div class="col-sm-3">
+                    <h4>@Model.ReleaseYear</h4>
+                </div>
+                <div class="col-sm-2">
+                    @if (rating != 0)
+                    {
+                        <p style="text-align:center;">Rated @Model.Rating out of 5</p>
+                        <div class="progress">
+                            @if (rating >= 4)
+                            {
+                                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@ratingPercent"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@ratingPercent%">
+                                </div>
+                            }
+                            else if (rating < 4 && rating >= 3)
+                            {
+                                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="@ratingPercent"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@ratingPercent%">
+                                </div>
+                            }
+                            else if (rating < 3 && rating >= 2)
+                            {
+                                <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="@ratingPercent"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@ratingPercent%">
+                                </div>
+                            }
+                            else if (rating < 2 && rating >= 1)
+                            {
+                                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="@ratingPercent"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@ratingPercent%">
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div>Not Yet Rated</div>
+                    }
+                </div>
+                <div class="col-sm-2">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#ratingModal">Rate Game</button>
+                    }
+                </div>
+            </div>
+        </div>
+        <hr style="clear:both;" />
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CategoryName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PlatformId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PlatformName)
+            </dd>
+        </dl>
+        @{
+            if (Model.IsPurchased)
+            {
+                <p>You Own This Game</p>
+            }
+            else
+            {
+                <h3>$@Model.Price</h3>
+            }
+        }
+
+        <br />
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (Model.IsPurchased)
+                        {
+                            <button class="btn btn-primary btn-lg" data-toggle="modal" onclick="downloadGame();">Download</button>
+                        }
+                        else if (!Model.IsInUserCart)
+                        {
+
+                            @Html.ActionLink("Add to Cart", "Add", "Cart", new { id = Model.Id }, new { @class = "btn btn-success btn-lg" })
+
+                        }
+                        else
+                        {
+                            <p style="font-size:large">This game is in your shopping cart.</p>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @if (!Model.IsPurchased)
+                        {
+                            if (Model.IsInWishList)
+                            {
+                                @Html.ActionLink("Remove from Wish List", "Remove", "WishLists", new { id = Model.Id }, new { @class = "btn btn-primary btn-lg" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add to Wish List", "Add", "WishLists", new { id = Model.Id }, new { @class = "btn btn-primary btn-lg" })
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<hr />
+<div>
+    <h4 style="text-align:center;">ABOUT THIS GAME</h4>
+    <br />
+    <p>
+        @Html.DisplayFor(model => model.Description)
+    </p>
+</div>
+<hr />
+
+<div>
+    <h4 style="text-align:center;">CUSTOMER REVIEWS</h4>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <button class="btn btn-primary margin-bottom" data-toggle="modal" data-target="#reviewModal">Add Review</button>
+    }
+    @Html.Partial("_ReviewListPartial", Model.Reviews)
+</div>
+
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="ratingModalTitle">How do you rate this game?</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="ratingValue" class="modal-label">On a scale from 1 to 5:</label>
+                        <select name="rating" class="form-control" id="ratingValue" style="margin-left:15px;">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="gameId" value="@Model.Id" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnSaveRating" onclick="SaveRating();">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>@Model.Title
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        var obj= @Html.Raw(Json.Encode(Model));
+
+        function downloadGame() {
+            download(obj.Title + '.txt', obj.Title);
+        }
+
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        function SaveRating() {
+            var ratingObj = {
+                GameId: $('#gameId').val(),
+                Rating: $('#ratingValue').val()
+            };
+
+            $.ajax({
+                url: "/Home/AddRating",
+                data: JSON.stringify(ratingObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#ratingValue').val(result.Rating);
+                    $('#ratingModal').modal('hide');
+                    location.reload();
+                },
+                error: function (result) {
+                    alert(result.Error);
+                    $('#ratingModal').modal('hide');
+                },
+            });
+        }
+    </script>
+}

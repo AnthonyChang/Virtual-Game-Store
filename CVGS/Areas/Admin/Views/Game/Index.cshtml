@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CVGS.Data.Game>
+@{
+
+    ViewBag.Title = "Game List";
+}
+
+<style type="text/css">
+    .tempdata {
+        color: red;
+        font-weight: bold;
+        margin-top:20px;
+        margin-bottom:20px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<p>In this page, you can add new games and edit or delete the existing ones.</p>
+@Html.ActionLink("Add New Game", "Create", "Game", null, new { @class = "btn btn-success btn-large" })
+<div class="tempdata">@TempData["message"]</></div>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.ReleaseYear)</th>
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.PlatformId)</th>
+                <th>@Html.DisplayNameFor(model => model.CategoryId)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ReleaseYear)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PlatformName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Game", new { Id = item.Id })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>&nbsp;&nbsp;
+                        <a href="@Url.Action("Delete", "Game",   new { Id = item.Id })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

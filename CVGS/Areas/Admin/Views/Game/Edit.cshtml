@@ -1,0 +1,107 @@
+﻿@model CVGS.Data.Game
+@{
+    ViewBag.Title = "Edit Game";
+}
+
+@Styles.Render("~/Content/site")
+<style type="text/css">
+    .form-control-xwide {
+        min-width: 700px;
+        width: auto;
+    }
+
+    .form-control-wide {
+        min-width: 500px;
+        width: auto;
+    }
+
+    .form-control-narrow {
+        min-width: 100px;
+        width: 100px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<p>Required fields are marked with <span style="color:red;font-weight:bolder"><sup>&#8902;</sup></span></p>
+<hr />
+@using (Html.BeginForm("Edit", "Game", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control form-control-wide" })
+            @Html.ValidationMessageFor(model => model.Title, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReleaseYear, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control form-control-narrow" })
+            @Html.ValidationMessageFor(model => model.ReleaseYear, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewData["GameCategories"], null, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PlatformId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("PlatformId", (IEnumerable<SelectListItem>)ViewData["GamePlatforms"], null, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control form-control-xwide", rows = 10 })
+            @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control form-control-narrow" })
+            @Html.ValidationMessageFor(model => model.Price, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ImageUrl, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.ImageUrl, new { @class = "form-control form-control-wide" })
+            @Html.ValidationMessageFor(model => model.ImageUrl, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+    //submit button
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-2">
+            <input type="submit" class="btn btn-success" value="Save" />
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Cancel", "Index", "Game", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // to mark required fields with a red asteriks
+            $('input[type=text], textarea').each(function () {
+                var req = $(this).attr('data-val-required');
+                if (undefined != req) {
+                    var label = $('label[for="' + $(this).attr('id') + '"]');
+                    var text = label.text();
+                    if (text.length > 0) {
+                        label.append('<span style="color:red;font-weight:bold"er> <sup>&#8902;</sup></span>');
+                    }
+                }
+            });
+        });
+    </script>
+}

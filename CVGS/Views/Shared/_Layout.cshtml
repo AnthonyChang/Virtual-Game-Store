@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link runat="server" rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+    <link runat="server" rel="icon" href="~/favicon.ico" type="image/ico" />
+    <title>@ViewBag.Title - Caesar Salad Gaming</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Caesar Salad Gaming", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("Events", "Index", "Events", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { Area = "" }, null)</li>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Administration <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Manage Games", "Index", "Game", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Manage Events", "Index", "Event", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Manage Reviews", "Index", "Review", new { Area = "Admin" }, null)</li>
+                                <li>@Html.ActionLink("Generate Reports", "Index", "Report", new { Area = "Admin" }, null)</li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer style="color:#fff;">
+            <p>&copy; @DateTime.Now.Year - Caesar Salad Gaming</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

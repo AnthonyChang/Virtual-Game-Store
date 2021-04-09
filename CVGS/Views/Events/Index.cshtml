@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CVGS.Models.EventDetailsViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    body {
+        background: center top no-repeat #1b2838;
+        color: white;
+    }
+
+    .vertical-space {
+        margin-top: 3em;
+    }
+
+    .table td {
+        text-align: center;
+    }
+</style>
+
+<h2>Current Events</h2>
+
+<table class="table">
+    <tr style="background: radial-gradient(black, transparent);">
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Event.Title)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Event.StartTime)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.Event.EndTime)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.EventType)
+        </th>
+        <th class="text-center">
+            Registered
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventType)
+            </td>
+            <td>
+                @if (item.UserRegistered)
+                {
+                    @*<img width="25" height="25" src="https://img.favpng.com/1/21/25/registered-trademark-symbol-computer-icons-png-favpng-hMPU6iFz92csa1NkyqjzzMC4U.jpg"/>*@
+                    <span class="glyphicon glyphicon-ok"></span>
+                }
+            </td>
+            <td>
+                <a href="@Url.Action("Details", "Events", new { id = item.Event.Id })" class="btn btn-sm btn-primary" title="View Event Details"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;DETAILS</a>
+            </td>
+        </tr>
+    }
+
+</table>

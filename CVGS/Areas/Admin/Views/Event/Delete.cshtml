@@ -1,0 +1,98 @@
+﻿@model CVGS.Data.Event
+
+@{
+    ViewBag.Title = "Delete Event";
+}
+<style type="text/css">
+    dt, dl {
+        padding-bottom:15px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+
+<h3 style="color:red;">Are you sure you want to delete this event?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AttendeeNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AttendeeNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxAttendeeNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxAttendeeNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsIRL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsIRL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Event", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        // submit button
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-2">
+                <input type="submit" class="btn btn-danger" value="Delete" />
+            </div>
+            <div class="col-md-4">
+                @Html.ActionLink("Cancel", "Index", "Event", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    }
+</div>

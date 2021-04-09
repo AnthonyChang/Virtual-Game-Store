@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CVGSAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CreditCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HolderId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CardNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExpirationDate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CVV" Type="varchar" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Title" Type="varchar(max)" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="StartTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="AttendeeNumber" Type="int" Nullable="false" />
+          <Property Name="MaxAttendeeNumber" Type="int" Nullable="false" />
+          <Property Name="IsIRL" Type="bit" Nullable="false" />
+          <Property Name="Location" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="EventAttendee">
+          <Key>
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="AttendeeId" />
+          </Key>
+          <Property Name="EventId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="AttendeeId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FriendList">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="friendId" />
+          </Key>
+          <Property Name="userId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="friendId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Title" Type="varchar(max)" Nullable="false" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="PlatformId" Type="int" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Rating" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ReleaseYear" Type="int" />
+          <Property Name="ImageUrl" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="GameCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GamePlatform">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GameId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Rating" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameReview">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GameId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ReviewText" Type="varchar(max)" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="EditedOn" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Approved" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MemberUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FirstName" Type="varchar(max)" />
+          <Property Name="LastName" Type="varchar(max)" />
+          <Property Name="Sex" Type="int" />
+          <Property Name="BirthDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="SendPromotionalEmails" Type="bit" />
+          <Property Name="CategoryOptions" Type="int" />
+          <Property Name="PlatformOptions" Type="int" />
+          <Property Name="MailingAddressApartment" Type="varchar" MaxLength="10" />
+          <Property Name="MailingAddressStreetNumber" Type="varchar" MaxLength="10" />
+          <Property Name="MailingAddressStreetName" Type="varchar" MaxLength="255" />
+          <Property Name="MailingAddressCity" Type="varchar" MaxLength="100" />
+          <Property Name="MailingAddressProvince" Type="char" MaxLength="2" />
+          <Property Name="MailingAddressPostalCode" Type="char" MaxLength="7" />
+          <Property Name="ShippingAddressApartment" Type="varchar" MaxLength="10" />
+          <Property Name="ShippingAddressStreetNumber" Type="varchar" MaxLength="10" />
+          <Property Name="ShippingAddressStreetName" Type="varchar" MaxLength="255" />
+          <Property Name="ShippingAddressCity" Type="varchar" MaxLength="100" />
+          <Property Name="ShippingAddressProvince" Type="char" MaxLength="2" />
+          <Property Name="ShippingAddressPostalCode" Type="char" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="PurchaseDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreditCardUsed" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="OrderId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GameId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Province">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserCartItem">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="GameId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WishList">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="gameId" />
+          </Key>
+          <Property Name="userId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="gameId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="CVGSAppModelStoreContainer">
+          <EntitySet Name="CreditCard" EntityType="Self.CreditCard" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventAttendee" EntityType="Self.EventAttendee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FriendList" EntityType="Self.FriendList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameCategory" EntityType="Self.GameCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GamePlatform" EntityType="Self.GamePlatform" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameRating" EntityType="Self.GameRating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameReview" EntityType="Self.GameReview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MemberUser" EntityType="Self.MemberUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderItem" EntityType="Self.OrderItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Province" EntityType="Self.Province" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserCartItem" EntityType="Self.UserCartItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WishList" EntityType="Self.WishList" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CVGSAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CVGSAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CreditCards" EntityType="CVGSAppModel.CreditCard" />
+          <EntitySet Name="GameCategories" EntityType="CVGSAppModel.GameCategory" />
+          <EntitySet Name="GamePlatforms" EntityType="CVGSAppModel.GamePlatform" />
+          <EntitySet Name="Provinces" EntityType="CVGSAppModel.Province" />
+          <EntitySet Name="MemberUsers" EntityType="CVGSAppModel.MemberUser" />
+          <EntitySet Name="Games" EntityType="CVGSAppModel.Game" />
+          <EntitySet Name="GameRatings" EntityType="CVGSAppModel.GameRating" />
+          <EntitySet Name="GameReviews" EntityType="CVGSAppModel.GameReview" />
+          <EntitySet Name="UserCartItems" EntityType="CVGSAppModel.UserCartItem" />
+          <EntitySet Name="Orders" EntityType="CVGSAppModel.Order" />
+          <EntitySet Name="OrderItems" EntityType="CVGSAppModel.OrderItem" />
+          <EntitySet Name="FriendLists" EntityType="CVGSAppModel.FriendList" />
+          <EntitySet Name="WishLists" EntityType="CVGSAppModel.WishList" />
+          <EntitySet Name="Events" EntityType="CVGSAppModel.Event" />
+          <EntitySet Name="EventAttendees" EntityType="CVGSAppModel.EventAttendee" />
+        </EntityContainer>
+        <EntityType Name="CreditCard">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HolderId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ExpirationDate" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CVV" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GameCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GamePlatform">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Province">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MemberUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="Int32" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="SendPromotionalEmails" Type="Boolean" />
+          <Property Name="CategoryOptions" Type="Int32" />
+          <Property Name="PlatformOptions" Type="Int32" />
+          <Property Name="MailingAddressApartment" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MailingAddressStreetNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MailingAddressStreetName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MailingAddressCity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MailingAddressProvince" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="MailingAddressPostalCode" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="ShippingAddressApartment" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressStreetNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressStreetName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressCity" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressProvince" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="ShippingAddressPostalCode" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="PlatformId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Rating" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ReleaseYear" Type="Int32" />
+          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="GameRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Rating" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameReview">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EditedOn" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Approved" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserCartItem">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CreditCardUsed" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderId" />
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="OrderId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="FriendList">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="friendId" />
+          </Key>
+          <Property Name="userId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="friendId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="WishList">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="gameId" />
+          </Key>
+          <Property Name="userId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="gameId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="AttendeeNumber" Type="Int32" Nullable="false" />
+          <Property Name="MaxAttendeeNumber" Type="Int32" Nullable="false" />
+          <Property Name="IsIRL" Type="Boolean" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EventAttendee">
+          <Key>
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="AttendeeId" />
+          </Key>
+          <Property Name="EventId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AttendeeId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CVGSAppModelStoreContainer" CdmEntityContainer="CVGSAppEntities">
+          <EntitySetMapping Name="CreditCards">
+            <EntityTypeMapping TypeName="CVGSAppModel.CreditCard">
+              <MappingFragment StoreEntitySet="CreditCard">
+                <ScalarProperty Name="CVV" ColumnName="CVV" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="HolderId" ColumnName="HolderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameCategories">
+            <EntityTypeMapping TypeName="CVGSAppModel.GameCategory">
+              <MappingFragment StoreEntitySet="GameCategory">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GamePlatforms">
+            <EntityTypeMapping TypeName="CVGSAppModel.GamePlatform">
+              <MappingFragment StoreEntitySet="GamePlatform">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provinces">
+            <EntityTypeMapping TypeName="CVGSAppModel.Province">
+              <MappingFragment StoreEntitySet="Province">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MemberUsers">
+            <EntityTypeMapping TypeName="CVGSAppModel.MemberUser">
+              <MappingFragment StoreEntitySet="MemberUser">
+                <ScalarProperty Name="ShippingAddressPostalCode" ColumnName="ShippingAddressPostalCode" />
+                <ScalarProperty Name="ShippingAddressProvince" ColumnName="ShippingAddressProvince" />
+                <ScalarProperty Name="ShippingAddressCity" ColumnName="ShippingAddressCity" />
+                <ScalarProperty Name="ShippingAddressStreetName" ColumnName="ShippingAddressStreetName" />
+                <ScalarProperty Name="ShippingAddressStreetNumber" ColumnName="ShippingAddressStreetNumber" />
+                <ScalarProperty Name="ShippingAddressApartment" ColumnName="ShippingAddressApartment" />
+                <ScalarProperty Name="MailingAddressPostalCode" ColumnName="MailingAddressPostalCode" />
+                <ScalarProperty Name="MailingAddressProvince" ColumnName="MailingAddressProvince" />
+                <ScalarProperty Name="MailingAddressCity" ColumnName="MailingAddressCity" />
+                <ScalarProperty Name="MailingAddressStreetName" ColumnName="MailingAddressStreetName" />
+                <ScalarProperty Name="MailingAddressStreetNumber" ColumnName="MailingAddressStreetNumber" />
+                <ScalarProperty Name="MailingAddressApartment" ColumnName="MailingAddressApartment" />
+                <ScalarProperty Name="PlatformOptions" ColumnName="PlatformOptions" />
+                <ScalarProperty Name="CategoryOptions" ColumnName="CategoryOptions" />
+                <ScalarProperty Name="SendPromotionalEmails" ColumnName="SendPromotionalEmails" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="CVGSAppModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="ReleaseYear" ColumnName="ReleaseYear" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PlatformId" ColumnName="PlatformId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameRatings">
+            <EntityTypeMapping TypeName="CVGSAppModel.GameRating">
+              <MappingFragment StoreEntitySet="GameRating">
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameReviews">
+            <EntityTypeMapping TypeName="CVGSAppModel.GameReview">
+              <MappingFragment StoreEntitySet="GameReview">
+                <ScalarProperty Name="Approved" ColumnName="Approved" />
+                <ScalarProperty Name="EditedOn" ColumnName="EditedOn" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ReviewText" ColumnName="ReviewText" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserCartItems">
+            <EntityTypeMapping TypeName="CVGSAppModel.UserCartItem">
+              <MappingFragment StoreEntitySet="UserCartItem">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="CVGSAppModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="CreditCardUsed" ColumnName="CreditCardUsed" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderItems">
+            <EntityTypeMapping TypeName="CVGSAppModel.OrderItem">
+              <MappingFragment StoreEntitySet="OrderItem">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendLists">
+            <EntityTypeMapping TypeName="CVGSAppModel.FriendList">
+              <MappingFragment StoreEntitySet="FriendList">
+                <ScalarProperty Name="friendId" ColumnName="friendId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WishLists">
+            <EntityTypeMapping TypeName="CVGSAppModel.WishList">
+              <MappingFragment StoreEntitySet="WishList">
+                <ScalarProperty Name="gameId" ColumnName="gameId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="CVGSAppModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="IsIRL" ColumnName="IsIRL" />
+                <ScalarProperty Name="MaxAttendeeNumber" ColumnName="MaxAttendeeNumber" />
+                <ScalarProperty Name="AttendeeNumber" ColumnName="AttendeeNumber" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventAttendees">
+            <EntityTypeMapping TypeName="CVGSAppModel.EventAttendee">
+              <MappingFragment StoreEntitySet="EventAttendee">
+                <ScalarProperty Name="AttendeeId" ColumnName="AttendeeId" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

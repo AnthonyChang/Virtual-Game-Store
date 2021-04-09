@@ -1,0 +1,100 @@
+﻿@model CVGS.Models.ProfileViewModel
+@using Microsoft.AspNet.Identity;
+
+@{
+    ViewBag.Title = Model.DisplayName + "'s Profile";
+}
+
+<style type="text/css">
+    body {
+        background: center top no-repeat #1b2838;
+        color: white;
+    }
+
+    dt, dd {
+        display: block;
+        float: left;
+        margin-top: 20px;
+    }
+
+    dl {
+        overflow: hidden;
+    }
+</style>
+
+<br />
+<h2>@Model.DisplayName</h2>
+<h4>Member Profile</h4>
+
+@if (Model.Id != User.Identity.GetUserId())
+{
+    if (Model.UserInProfileFriendList && Model.IsInUserFriendList)
+    {
+        <p>You and @Model.DisplayName are mutual friends.</p>
+    }
+    else if (Model.UserInProfileFriendList)
+    {
+        <p>@Model.DisplayName has friended you.</p>
+    }
+    else if (Model.IsInUserFriendList)
+    {
+        <p>@Model.DisplayName is on your friend list.</p>
+    }
+    if (Model.IsInUserFriendList)
+    {
+        @Html.ActionLink("Unfriend", "Unfriend", "Profile", new { id = Model.Id }, new { @class = "btn btn-danger btn-large" })
+    }
+    else
+    {
+        @Html.ActionLink("Add to Friend List", "AddToFriendList", "Profile", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    }
+}
+else
+{
+    <p>This is your profile.</p>
+}
+<hr />
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.FavoriteCatefories):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.FavoriteCatefories)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.FavoritePlatforms):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.FavoritePlatforms)
+    </dd>
+</dl>
+<br />
+@if (Model.UserInProfileFriendList)
+{
+    <hr />
+    <h2>Wish List</h2>
+    if (Model.WishList.Any())
+    {
+        @Html.Partial("_GameListPartial", Model.WishList)
+    }
+    else
+    {
+        <p>Wish list is empty.</p>
+    }
+    <hr />
+    <h2>Games Owned</h2>
+    if (Model.OwnedGames.Any())
+    {
+        @Html.Partial("_GameListPartial", Model.OwnedGames)
+    }
+    else
+    {
+        <p>This user has not purchased any games yet.</p>
+    }
+}
+else
+{
+    <br />
+    <p style="color:lightgoldenrodyellow; font-style:italic">You must be on the user's Friend List to be able to see their Wish List and Games Owned.</p>
+}

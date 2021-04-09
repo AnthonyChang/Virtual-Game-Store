@@ -1,0 +1,171 @@
+﻿
+@model CVGS.Models.CartViewModel
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+@Styles.Render("~/Content/toastrcss")
+<style type="text/css">
+    h2 {
+        margin: 1em 0 2em;
+    }
+
+    img {
+        border-radius: 25%;
+    }
+
+    .large-font {
+        font-size: large;
+    }
+
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+
+    .header {
+        font-size: x-large;
+    }
+
+    .top-spacing {
+        line-height: 2em;
+        margin-top: 3.5em;
+    }
+
+    .glyphicon-remove, .glyphicon-heart {
+        color: gray;
+    }
+
+    .btn:hover .glyphicon-remove, .btn:hover .glyphicon-heart {
+        color: red;
+    }
+
+    .toast-top-center {
+        top: 40%;
+        margin: 0 auto;
+    }
+</style>
+
+<h2>Your @ViewBag.Title</h2>
+
+@if (Model != null && Model.GamesInCart != null && Model.GamesInCart.Count() > 0)
+{
+    <div class="container large-font">
+        @foreach (var item in Model.GamesInCart)
+        {
+            <div class="row vertical-align">
+                <div class="col-md-1"><img src="@item.ImageUrl" alt="Game Cover of @item.Title" width="50" /></div>
+                <div class="col-md-3">@item.Title</div>
+                <div class="col-md-2">$@item.Price</div>
+                <div class="col-md-4">
+                    <button class="btn btn-default" title="Remove" onclick="removeItem('@item.Id');"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>&nbsp;&nbsp;
+                    <button class="btn btn-default" title=""Move to Wish List" onclick="moveToWishList('@item.Id');"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></button>
+                    @*<a href="@Url.Action("WishList", "")" class="btn btn-default" title="Move to Wish List"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>*@
+                </div>
+            </div>
+            <hr>
+        }
+        <div class="row">
+            <div class="col-md-6 header">Your Total:</div>
+            <div class="col-md-6 header">$@Model.Total</div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Your shopping cart is empty.</p>
+}
+    <div class="row">
+        <div class="col-md-3 col-md-offset-1 header"><a href="@Url.Action("Index", "Home")" class="btn btn-primary top-spacing"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>&nbsp;&nbsp;Continue Shopping</a></div>
+
+        @if (Model != null && Model.GamesInCart != null && Model.GamesInCart.Count() > 0)
+        {
+            <div class="col-md-3 header"><a href="@Url.Action("ClearAll", "Cart")" class="btn btn-danger top-spacing">Clear Cart&nbsp;&nbsp;<span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div>
+            <div class="col-md-3 header"><a href="@Url.Action("Checkout", "Cart")" class="btn btn-success top-spacing">Checkout&nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></div>
+        }
+    </div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/toastr")
+    @Scripts.Render("~/bundles/bs4toast")
+    <script>
+        $(document).ready(function () {
+            // if the search query string is not empty, remove it from URL
+            //if (window.location.search != "") {
+            //    clearCurrentURL();
+            //}
+
+            toastr.options = {
+                closeButton: true,
+                showDuration: 100,
+                hideDuration: 1000,
+                timeOut: 1500,
+                extendedTimeOut: 200,
+                tapToDismiss: true,
+                debug: false,
+                fadeOut: 200,
+                positionClass: "toast-top-center"
+            };
+        });
+
+        function removeItem(itemId) {
+            var obj = {
+                GameId: itemId,
+            };
+            $.ajax({
+                url: "/Cart/RemoveItem",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    toastr.options.timeOut = 3000;
+                    toastr.success('Item was removed from your shopping cart');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                },
+                error: function (result) {
+                    alert(result.Error);
+                },
+            });
+
+        }
+
+        function moveToWishList(itemId) {
+            var obj = {
+                GameId: itemId,
+            };
+            $.ajax({
+                url: "/Cart/MoveToWishList",
+                data: JSON.stringify(obj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    toastr.options.timeOut = 3000;
+                    if (result.Success) {
+                        toastr.success('Item was moved to your wish list');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+
+                    }
+                    else {
+                        toastr.error(result.Error);
+                    }
+                },
+                error: function (result) {
+                    toastr.options.timeOut = 5000;
+                    toastr.error(result.Error);
+                },
+            });
+        }
+    </script>
+}
+
+
+
+
+

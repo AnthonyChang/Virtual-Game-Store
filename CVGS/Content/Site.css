@@ -1,0 +1,65 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.navbar {
+    background-color: #373030;
+    color:floralwhite;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+
+hr {
+    margin:2.5em;
+}
+
+.dropdown-menu {
+    background-color: #373030;
+}
+
+.dropdown-menu > li > a,
+.dropdown-menu > li > a {
+    background-color: #373030
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-color: #161313
+}
+
+.dropdown-menu > li > a {
+    color: #9d9d9d;
+}
+
+/* Writing color when hover over*/
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    color: white;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}

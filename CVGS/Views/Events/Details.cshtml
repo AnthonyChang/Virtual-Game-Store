@@ -1,0 +1,100 @@
+﻿@model CVGS.Models.EventDetailsViewModel
+
+@{
+    ViewBag.Title = "Event Details";
+    var warning = TempData["message"] ?? "";
+}
+
+<style type="text/css">
+    body {
+        background: center top no-repeat #1b2838;
+        color: white;
+    }
+
+    dt, dd {
+        padding-bottom: 10px;
+    }
+</style>
+
+<h2>@Model.Event.Title</h2>
+
+<div>
+    <h4>Event Details</h4>
+    @if (Model.UserRegistered && string.IsNullOrEmpty(warning.ToString()))
+    {
+        <p>You are registered for this event.</p>
+    }
+    <p>@warning</p>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.StartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.StartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.EndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.EndTime)
+        </dd>
+
+        <dt>
+            Location Type
+        </dt>
+
+        @if (Model.Event.IsIRL)
+        {
+            <dd>
+                Physical
+            </dd>
+
+            <dt>
+                Address
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Event.Location)
+            </dd>
+        }
+        else
+        {
+            <dd>
+                Virtual
+            </dd>
+
+            <dt>
+                Link
+            </dt>
+
+            <dd>
+                <a href="@Model.Event.Location" alt="Link to virtual event location">@Html.DisplayFor(model => model.Event.Location)</a>
+            </dd>
+        }
+
+    </dl>
+</div>
+<div class="row">
+    <div class="col-md-1 col-md-offset-1 header"><a href="@Url.Action("Index", "Events")" class="btn btn-primary top-spacing">Back to Events</a></div>
+    @if (!Model.UserRegistered)
+    {
+        <div class="col-md-1 col-md-offset-1 header"><a href="@Url.Action("Register", "Events", new { eventId = Model.Event.Id })" class="btn btn-success top-spacing">Register for Event</a></div>
+    }
+    else
+    {
+        <div class="col-md-1 col-md-offset-1 header"><a href="@Url.Action("Unregister", "Events", new { eventId = Model.Event.Id })" class="btn btn-danger top-spacing">Unsubscribe from Event</a></div>
+    }
+</div>

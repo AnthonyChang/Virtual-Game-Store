@@ -1,0 +1,18 @@
+﻿@model IEnumerable<CVGS.Data.Game>
+@{
+    ViewBag.Title = "My Games Library";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+
+@{
+    if (Model.Any())
+    {
+        @Html.Partial("_GameListPartial")
+    } else
+    {
+        <p>You currently do not own any games.</p>
+    }
+}

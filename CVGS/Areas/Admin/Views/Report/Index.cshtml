@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Generate Reports";
+}
+<style>
+    .vertical-spacing
+    {
+        margin-top:2em;
+    }
+
+    .btn-fixed {
+        width: 17em;
+        height: 4em;
+        text-align: center;
+        line-height: 3em;
+    }
+    .error {
+        color:red;
+    }
+
+    .message {
+        color:blue;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+<p><span class="error">@TempData["error"]</span></p>
+<p><span class="message">@TempData["message"]</span></p>
+<div class="container">
+    <div class="row vertical-spacing">
+        <div class="col-md-4">
+            @Html.ActionLink("Game List Report", "GameList", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Game Sales Report", "GameSales", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Wish List Report", "WishList", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+    </div>
+    <div class="row vertical-spacing">
+        <div class="col-md-4">
+            @Html.ActionLink("Member List Report", "MemberList", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Member Sales Report", "MemberSales", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Friend List Report", "FriendList", "Report", new { @class = "btn btn-success btn-fixed" })
+        </div>
+    </div>
+</div>
+
+

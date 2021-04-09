@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CVGS.Data.Event>
+@{
+    ViewBag.Title = "Event List";
+}
+
+<style type="text/css">
+    .tempdata {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<h2>Event List</h2>
+<p>In this page, you can add new events and edit or delete the existing ones.</p>
+@Html.ActionLink("Add New Event", "Create", "Event", null, new { @class = "btn btn-success btn-large" })
+
+<div class="tempdata">@TempData["message"]</></div>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Title)</th>
+                <th>@Html.DisplayNameFor(model => model.StartTime)</th>
+                <th>@Html.DisplayNameFor(model => model.EndTime)</th>
+                <th>@Html.DisplayNameFor(model => model.MaxAttendeeNumber)</th>
+                <th>@Html.DisplayNameFor(model => model.IsIRL)</th>
+                <th>@Html.DisplayNameFor(model => model.Location)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.StartTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.EndTime)</td>
+                <td>@Html.DisplayFor(modelItem => item.MaxAttendeeNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsIRL)</td>
+                <td>@Html.DisplayFor(modelItem => item.Location)</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Event", new { id = item.Id })" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>&nbsp;&nbsp;
+                    <a href="@Url.Action("Delete", "Event",   new { id = item.Id })" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

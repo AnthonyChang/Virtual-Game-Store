@@ -1,0 +1,46 @@
+﻿@model IEnumerable<CVGS.Areas.Admin.Models.GameReviewApprovalModel>
+@{
+    ViewBag.Title = "Unapproved Reviews";
+}
+
+<style>
+    .btn-bottom-margin {
+        margin-bottom: 0.3em;
+    }
+</style>
+
+<h2>Unapproved Reviews List</h2>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.GameName)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
+                <th>@Html.DisplayNameFor(model => model.ReviewText)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="tbody">
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.GameName)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedBy)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                <td>@Html.DisplayFor(modelItem => item.ReviewText)</td>
+                <td>
+                    <a href="@Url.Action("ApproveReview", "Review", new { id = item.Id, approved = true })" class="btn btn-success btn-sm btn-bottom-margin">Approve</a>&nbsp;&nbsp;
+                    <a href="@Url.Action("ApproveReview", "Review", new { id = item.Id, approved = false })" class="btn btn-danger btn-sm">Decline</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No unapproved reviews.</p>
+}

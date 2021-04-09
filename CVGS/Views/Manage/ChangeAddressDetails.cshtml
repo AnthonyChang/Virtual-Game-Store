@@ -1,0 +1,184 @@
+﻿@model CVGS.Models.AddressesViewModel
+@{
+    ViewBag.Title = "Change Address Details";
+}
+@Styles.Render("~/Content/themes/base/css")
+<style type="text/css">
+    .form-horizontal .control-label {
+        text-align: center;
+    }
+
+    .form-horizontal .form-control {
+        margin-bottom: 17px;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("ChangeAddressDetails", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <h3>Mailing Address</h3>
+
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(m => m.MailingAddressApartment, new { @class = "col-md-1 control-label" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MailingAddressStreetNumber, new { @class = "col-md-1 control-label" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MailingAddressStreetName, new { @class = "col-md-3 control-label" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MailingAddressCity, new { @class = "col-md-2 control-label" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MailingAddressProvince, new { @class = "col-md-2 control-label" })
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MailingAddressPostalCode, new { @class = "col-md-2 control-label" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-1">
+            @Html.TextBoxFor(m => m.MailingAddressApartment, new { @class = "form-control" })
+        </div>
+        <div class="col-md-1">
+            @Html.TextBoxFor(m => m.MailingAddressStreetNumber, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.MailingAddressStreetName, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBoxFor(m => m.MailingAddressCity, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownList("MailingAddressProvince", (IEnumerable<SelectListItem>)ViewData["ProvinceList"], null, new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            @Html.TextBoxFor(m => m.MailingAddressPostalCode, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MailingAddressPostalCode, null, new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-group">
+        <div>
+            @Html.LabelFor(m => m.ShippingAddressSame, new { @class = "col-md-3 control-label" })
+        </div>
+        <div class="col-md-2">
+            @Html.CheckBoxFor(m => m.ShippingAddressSame, new { @class = "form-control" })
+        </div>
+    </div>
+    <hr />
+
+    <div id="shippingAddress">
+        <h3>Shipping Address</h3>
+        <div class="form-group" id="shippingAddressLabels">
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressApartment, new { @class = "col-md-1 control-label" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressStreetNumber, new { @class = "col-md-1 control-label" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressStreetName, new { @class = "col-md-3 control-label" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressCity, new { @class = "col-md-2 control-label" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressProvince, new { @class = "col-md-2 control-label" })
+            </div>
+            <div>
+                @Html.LabelFor(m => m.ShippingAddressPostalCode, new { @class = "col-md-2 control-label" })
+            </div>
+        </div>
+        <div class="form-group" id="shippingAddressControls">
+            <div class="col-md-1">
+                @Html.TextBoxFor(m => m.ShippingAddressApartment, new { @class = "form-control" })
+            </div>
+            <div class="col-md-1">
+                @Html.TextBoxFor(m => m.ShippingAddressStreetNumber, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.ShippingAddressStreetName, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(m => m.ShippingAddressCity, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("ShippingAddressProvince", (IEnumerable<SelectListItem>)ViewData["ProvinceList"], null, new { @class = "form-control" })
+            </div>
+            <div class="col-md-2">
+                @Html.TextBoxFor(m => m.ShippingAddressPostalCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ShippingAddressPostalCode, null, new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-success" value="Save" />
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-info" onclick="clearAll()">Clear All</button>
+            </div>
+            <div class="col-md-4">
+                @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // show or hide Shipping Address on page load
+            if ($('#ShippingAddressSame').is(":checked")) {
+                $("#shippingAddress").hide();
+            }
+            else {
+                $("#shippingAddress").show();
+            }
+
+            // on 'Is your mailing address the same as shipping?'unchecked, display the shipping address controls
+            $('#ShippingAddressSame').change(function () {
+                if ($(this).is(":checked")) {
+                    $("#shippingAddress").hide();
+                }
+                else {
+                    $("#ShippingAddressApartment").val("");
+                    $("#ShippingAddressStreetNumber").val("");
+                    $("#ShippingAddressStreetName").val("");
+                    $("#ShippingAddressCity").val("");
+                    $("#ShippingAddressProvince").val("");
+                    $("#ShippingAddressPostalCode").val("");
+                    $("#shippingAddress").show();
+                }
+            });
+        });
+
+        function clearAll() {
+            $("#MailingAddressApartment").val("");
+            $("#MailingAddressStreetNumber").val("");
+            $("#MailingAddressStreetName").val("");
+            $("#MailingAddressCity").val("");
+            $("#MailingAddressProvince").val("");
+            $("#MailingAddressPostalCode").val("");
+
+            $('#ShippingAddressSame').prop('checked', false);
+            $("#shippingAddress").show();
+
+            $("#ShippingAddressApartment").val("");
+            $("#ShippingAddressStreetNumber").val("");
+            $("#ShippingAddressStreetName").val("");
+            $("#ShippingAddressCity").val("");
+            $("#ShippingAddressProvince").val("");
+            $("#ShippingAddressPostalCode").val("");
+        }
+    </script>
+}

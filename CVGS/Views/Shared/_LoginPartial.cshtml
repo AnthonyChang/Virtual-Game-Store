@@ -1,0 +1,71 @@
+﻿<style>
+    .glyphicon-shopping-cart {
+        font-size: large;
+        z-index: -1;
+    }
+
+    .badge {
+        padding-left: 9px;
+        padding-right: 9px;
+        -webkit-border-radius: 9px;
+        -moz-border-radius: 9px;
+        border-radius: 9px;
+    }
+
+    .label-warning[href],
+    .badge-warning[href] {
+        background-color: #c67605;
+    }
+
+    #lblCartCount {
+        font-size: x-small;
+        background: #ff0000;
+        color: #fff;
+        padding: 0 5px;
+        vertical-align: top;
+        margin-left: -8px;
+    }
+</style>
+
+@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { Area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="@Url.Action("Index", "Cart", routeValues: new { Area = "" })" title="Your Shopping Cart">
+                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                    @if (Session["cart"] != null)
+                    {
+                        if ((string)Session["cart"] != "0")
+                        {
+                            <span class="badge badge-warning" id="lblCartCount">@Session["cart"]</span>
+                        }
+                    }
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Hello @User.Identity.GetUserName()! <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("User Account", "Index", "Manage", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("My Library", "Library", "Home", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("My Orders", "Orders", "Home", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("Wish List", "Index", "WishLists", new { Area = "" }, null)</li>
+                    <li>@Html.ActionLink("Friend List", "FriendList", "Manage", new { Area = "" }, null)</li>
+                </ul>
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

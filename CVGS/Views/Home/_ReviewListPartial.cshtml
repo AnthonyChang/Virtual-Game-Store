@@ -1,0 +1,276 @@
+﻿@model CVGS.Models.ReviewListModel
+@using Microsoft.AspNet.Identity
+@{
+    var currentUserId = User.Identity.GetUserId();
+}
+<style>
+    .colorwhite {
+        color: white;
+    }
+</style>
+
+<div id="reviews">
+    @if (Model.ApprovedReviews != null && Model.ApprovedReviews.Count > 0)
+    {
+        foreach (var item in Model.ApprovedReviews)
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    <b><a href="@Url.Action("Details", "Profile", new { id = item.ReviewerId })" class="colorwhite">@item.Reviewer</a>:</b><br /> <span class="small-text">Edited on: @item.EditedOn.ToString("MM/dd/yyyy")</span>
+                </div>
+                <div class="col-md-8" id="@item.Id">
+                    @item.ReviewText
+                </div>
+                <div class="col-md-1">
+                    @if (item.ReviewerId == currentUserId)
+                    {
+                        <button class="btn btn-sm btn-primary btn-margin-top" onclick="editReviewModal('@item.Id');"><span class="glyphicon glyphicon-edit"></span></button>
+                        <button class="btn btn-sm btn-danger btn-margin-top" onclick="deleteReviewModal('@item.Id')"><span class="glyphicon glyphicon-remove"></span></button>
+                    }
+                </div>
+            </div>
+            if (Model.ApprovedReviews.IndexOf(item) != Model.ApprovedReviews.Count() - 1)
+            {
+                <hr class="hr-reviews" />
+            }
+        }
+    }
+
+    @if (Model.UnapprovedReviewsByUser != null && Model.UnapprovedReviewsByUser.Count > 0)
+    {
+        if (Model.UnapprovedReviewsByUser.Count == 1)
+        {
+            <p class="pending-approval-notice">The following review you submitted is pending moderator approval. Once the approval is received, your comment will be published.</p>
+        }
+        else
+        {
+            <p class="pending-approval-notice">The following reviews you submitted are pending moderator approval. Once the approval is received, your comments will be published.</p>
+        }
+        foreach (var item in Model.UnapprovedReviewsByUser)
+        {
+            <div class="row">
+                <div class="col-md-2 unapproved-review">
+                    <b><a href="@Url.Action("Details", "Profile", new { id = item.ReviewerId })" class="colorwhite">@item.Reviewer</a></b><br /> <span class="small-text">Edited on: @item.EditedOn.ToString("MM/dd/yyyy")</span>
+                </div>
+                <div id="@item.Id" class="col-md-8 unapproved-review">
+                    @item.ReviewText
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-sm btn-primary btn-margin-top" onclick="editReviewModal('@item.Id');"><span class="glyphicon glyphicon-edit"></span></button>
+                    <button class="btn btn-sm btn-danger btn-margin-top" onclick="deleteReviewModal('@item.Id')"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+            </div>
+            if (Model.UnapprovedReviewsByUser.IndexOf(item) != Model.UnapprovedReviewsByUser.Count - 1)
+            {
+                <hr class="hr-reviews" />
+            }
+        }
+    }
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="reviewModalTitle">Write a Review</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="reviewValue" class="modal-label">Content:</label>
+                        <textarea class="form-control" id="reviewContent" rows="8" cols="200" style="margin-left:15px;" maxlength="2000"></textarea>
+                        <span id="reviewValidationError" class="modal-error" style="color:red;"></span>
+                    </div>
+                    <input type="hidden" id="gameIdValue" value="@Model.GameId" />
+                    <input type="hidden" id="reviewIdValue" value="" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAddReview" onclick="AddReview();">Add</button>
+                <button type="button" class="btn btn-primary" id="btnEditReview" style="display:none" onclick="EditReview();">Save</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteReview" style="display:none" onclick="DeleteReview();">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="noticeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title" id="noticeModalTitle">Notice</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <p>Your review is pending approval from moderator. Once the approval is received, it will be published.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAddReview" onclick="displayReviews('@Model.GameId');">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // when modal is closed, any information that user might have entered should be cleared
+        $('#reviewModal').on('hidden.bs.modal', function (e) {
+            clearModal();
+        })
+    });
+
+    // displaying Edit Review options on the modal
+    function editReviewModal(reviewId) {
+        $('#reviewModalTitle').text("Edit Your Review:");
+        var reviewContent = $('#' + reviewId).text().trim();
+        $('#reviewContent').text(reviewContent);
+        $('#reviewIdValue').text(reviewId);
+        $('#btnAddReview').hide();
+        $('#btnEditReview').show();
+        $('#reviewModal').modal('show');
+    }
+
+    // displaying Delete Review options on the modal
+    function deleteReviewModal(reviewId) {
+        $('#reviewModalTitle').text("Delete Your Review:");
+        var reviewContent = $('#' + reviewId).text().trim();
+        $('#reviewContent').text(reviewContent);
+        $("#reviewContent").prop("readonly", true);
+        $('#reviewIdValue').text(reviewId);
+        $('#btnAddReview').hide();
+        $('#btnDeleteReview').show();
+        $('#reviewModal').modal('show');
+    }
+
+    // Send data from the modal to the AddReview action
+    function AddReview() {
+        var reviewVal = $('#reviewContent').val().trim();
+
+        if (!reviewVal) {
+            $('#reviewValidationError').text("Content can not be empty.");
+            return false;
+        }
+
+        var reviewObj = {
+            GameId: $('#gameIdValue').val(),
+            ReviewText: reviewVal
+        };
+
+        $.ajax({
+            url: "/Home/AddReview",
+            data: JSON.stringify(reviewObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#reviewModal').modal('hide');
+                $('#noticeModal').modal('show');
+            },
+            error: function (result) {
+                alert(result.Error);
+                $('#reviewModal').modal('hide');
+            },
+        });
+    }
+
+    // Send data from the modal to the EditReview action
+    function EditReview() {
+        var reviewVal = $('#reviewContent').val().trim();
+
+        if (!reviewVal) {
+            $('#reviewValidationError').text("Content can not be empty.");
+            return false;
+        }
+
+        var reviewObj = {
+            Id: $('#reviewIdValue').text(),
+            GameId: $('#gameIdValue').val(),
+            ReviewText: reviewVal
+        };
+
+        $.ajax({
+            url: "/Home/EditReview",
+            data: JSON.stringify(reviewObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#reviewModal').modal('hide');
+                $('#noticeModal').modal('show');
+            },
+            error: function (result) {
+                //alert(result.Error);
+                $('#reviewModal').modal('hide');
+            },
+        });
+    }
+
+    // Send data from the modal to the DeleteReview action
+    function DeleteReview() {
+        var reviewObj = {
+            Id: $('#reviewIdValue').text(),
+            GameId: $('#gameIdValue').val()
+        };
+
+        $.ajax({
+            url: "/Home/DeleteReview",
+            data: JSON.stringify(reviewObj),
+            type: "POST",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                $('#reviewModal').modal('hide');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                refreshReviews();
+            },
+            error: function (result) {
+                //alert(result.Error);
+                $('#reviewModal').modal('hide');
+            },
+        });
+    }
+
+    // Close the current modal and refreshReviews function
+    function displayReviews() {
+        $('#noticeModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+        refreshReviews();
+    }
+
+    // Retrieve updated review list and refresh it on the screen
+    function refreshReviews() {
+        var gameId = $('#gameIdValue').val()
+        $.ajax({
+            url: "/Home/_ReviewListPartial/" + gameId,
+            type: "GET",
+            cache: false,
+            dataType: "html",
+            success: function (data) {
+                $("#reviews").html(data);
+            },
+            error: function (result) {
+                alert('An error has occured.');
+            },
+        });
+    }
+
+    // clear modal values when the modal is closed
+    function clearModal() {
+        $('#reviewModalTitle').text('Write a Review for ' + $('#gameTitle').text());
+        $('#reviewValidationError').text('');
+        $("#reviewContent").prop("readonly", false);
+        $('#reviewContent').val("");
+        $('#reviewIdValue').val("");
+        $('#btnAddReview').show();
+        $('#btnEditReview').hide();
+        $('#btnDeleteReview').hide();
+    }
+</script>

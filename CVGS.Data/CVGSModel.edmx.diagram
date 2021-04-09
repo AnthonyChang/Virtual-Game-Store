@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="97aed3a961124529adc89fa50389f50c" Name="Diagram1">
+        <EntityTypeShape EntityType="CVGSAppModel.CreditCard" Width="1.5" PointX="2.25" PointY="0.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.GameCategory" Width="1.5" PointX="4" PointY="5" />
+        <EntityTypeShape EntityType="CVGSAppModel.GamePlatform" Width="1.5" PointX="4" PointY="3.375" />
+        <EntityTypeShape EntityType="CVGSAppModel.Province" Width="1.5" PointX="0.5" PointY="5.625" />
+        <EntityTypeShape EntityType="CVGSAppModel.MemberUser" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.Game" Width="1.5" PointX="4" PointY="0.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.GameRating" Width="1.5" PointX="5.75" PointY="0.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.GameReview" Width="1.5" PointX="5.75" PointY="2.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.UserCartItem" Width="1.5" PointX="5.75" PointY="5.125" />
+        <EntityTypeShape EntityType="CVGSAppModel.Order" Width="1.5" PointX="7.5" PointY="0.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.OrderItem" Width="1.5" PointX="7.5" PointY="2.5" />
+        <EntityTypeShape EntityType="CVGSAppModel.FriendList" Width="1.5" PointX="7.5" PointY="4.125" />
+        <EntityTypeShape EntityType="CVGSAppModel.WishList" Width="1.5" PointX="2.25" PointY="5.625" />
+        <EntityTypeShape EntityType="CVGSAppModel.Event" Width="1.5" PointX="2.25" PointY="2.625" />
+        <EntityTypeShape EntityType="CVGSAppModel.EventAttendee" Width="1.5" PointX="7.5" PointY="5.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
